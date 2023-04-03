@@ -162,3 +162,29 @@ class ShoppingCart(models.Model):
                 name='unique_recipe_cart'
             )
         ]
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        verbose_name='Подписчик',
+        help_text='Подписчик на автора рецепта'
+    )
+    author = models.ForeignKey(
+        CustomUser, null=True,
+        on_delete=models.CASCADE,
+        related_name='followed',
+        verbose_name='Автор',
+        help_text='Автор рецепта'
+    )
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['author', 'user'],
+            name='unique_object'
+        )]
+        verbose_name = 'Подписка' 
+        verbose_name_plural = 'Подписки'
+ 

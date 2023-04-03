@@ -1,24 +1,22 @@
-from djoser.serializers import (
-    UserCreateSerializer as BaseUserRegistrationSerializer
-)
+from .serializers import UserCreateSerializer, UserSerializer
+
 from rest_framework import serializers, validators
 
 from recipes.models import Recipe
 from recipes.serializers import RecipeSerializer
 from users.mixins import IsSubscribedMixin
 
-from .models import CustomUser, Follow
+from .models import CustomUser
+from recipes.models import Follow
 
-
-class UserRegistrationSerializer(BaseUserRegistrationSerializer):
-    class Meta(BaseUserRegistrationSerializer.Meta):
-        model = CustomUser
-        fields = [
-            'email', 'id', 'username', 'first_name', 'last_name', 'password'
+class CustomUserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta): 
+        model = CustomUser 
+        fields = [ 
+            'email', 'id', 'username', 'first_name', 'last_name', 'password' 
         ]
 
-
-class CustomUserSerializer(serializers.ModelSerializer, IsSubscribedMixin):
+class CustomUserSerializer(UserSerializer):
     username = serializers.CharField(
         required=True,
         validators=[validators.UniqueValidator(
@@ -34,7 +32,7 @@ class CustomUserSerializer(serializers.ModelSerializer, IsSubscribedMixin):
         model = CustomUser
 
 
-class UserSubscribeSerializer(serializers.ModelSerializer, IsSubscribedMixin):
+class UserSubscribeSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField('get_recipes_count')
     username = serializers.CharField(

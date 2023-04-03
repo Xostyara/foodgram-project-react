@@ -8,9 +8,10 @@ router_v1.register(r'users', CustomUserViewSet, basename='users')
 
 subscriptions = CustomUserViewSet.as_view({'get': 'subscriptions', })
 
-urlpatterns = [
-    path('users/subscriptions/', subscriptions, name='subscriptions'),
-    path('', include(router_v1.urls)),
-    path('', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
-]
+router_v1.urls('users', CustomUserViewSet) 
+
+urlpatterns = [ 
+    path('', include(router_v1.urls)), 
+    path('', include('djoser.urls')), 
+    path('auth/', include('djoser.urls.authtoken')), 
+]  

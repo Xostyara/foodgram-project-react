@@ -1,4 +1,4 @@
-from djoser.views import UserViewSet
+from .views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -17,47 +17,56 @@ class CustomUserViewSet(UserViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-    def get_permissions(self):
-        if self.action == 'create':
-            permission_classes = [IsAuthenticated]
-        elif self.action == 'actioned':
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = [AllowAny]
-        return [permission() for permission in permission_classes]
-
     @action(
         detail=True,
-        methods=['GET', 'DELETE'],
+        methods=['GET',],
         permission_classes=[IsAuthenticated]
     )
     def subscribe(self, request, id):
-        followed = get_object_or_404(CustomUser, id=id)
-        follower = request.user
+        user = request.user
+        author = get_object_or_404(CustomUser, id=id)
+        if user == author:
+            return Response(
+                {'errors': 'Вы не можете подписаться на самого себя!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if Follow.objects.filter(user=user, author=author).exists(): 
+            return Response( 
+                {'errors': 'Вы уже подписаны'}, 
+                status=status.HTTP_400_BAD_REQUEST 
+            )
 
         if request.method == 'GET':
             subscribed = (Follow.objects.filter(
-                author=followed, user=follower).exists()
+                author=author, user=user).exists()
             )
             if subscribed is True:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            Follow.objects.get_or_create(
-                user=follower,
-                author=followed
-            )
-            serializer = UserSubscribeSerializer(
-                context=self.get_serializer_context()
-            )
-            return Response(serializer.to_representation(
-                instance=followed),
-                status=status.HTTP_201_CREATED
-            )
+            follow = Follow.objects.create(user=user, author=author) 
+            serializer = FollowSerializer( 
+            follow, context={'request': request} 
+            ) 
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED) 
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(
+        detail=True,
+        methods=['DELETE',],
+        permission_classes=[IsAuthenticated]
+    )
+    def unsubscribe(self, request, id):
+        user = request.user 
+        author = get_object_or_404(CustomUser, id=id) 
+
         if request.method == 'DELETE':
             Follow.objects.filter(
-                user=follower, author=followed
+                user=user, author=author
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
 
     @action(
         detail=True,
