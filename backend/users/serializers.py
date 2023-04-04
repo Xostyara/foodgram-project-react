@@ -32,9 +32,9 @@ class CustomUserSerializer(UserSerializer):
         model = CustomUser
 
 
-class UserSubscribeSerializer(serializers.ModelSerializer):
+class FollowSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.SerializerMethodField('get_recipes_count')
+    recipes_count = serializers.SerializerMethodField()
     username = serializers.CharField(
         required=True,
         validators=[validators.UniqueValidator(
@@ -48,20 +48,6 @@ class UserSubscribeSerializer(serializers.ModelSerializer):
             'email', 'id', 'username', 'first_name', 'last_name',
             'recipes', 'recipes_count', 'is_subscribed'
         ]
-
-    def validate(self, data):
-        author = data['followed']
-        user = data['follower']
-        if user == author:
-            raise serializers.ValidationError('You can`t follow for yourself!')
-        if (Follow.objects.filter(author=author, user=user).exists()):
-            raise serializers.ValidationError('You have already subscribed!')
-        return data
-
-    def create(self, validated_data):
-        subscribe = Follow.objects.create(**validated_data)
-        subscribe.save()
-        return subscribe
 
     def get_recipes_count(self, data):
         return Recipe.objects.filter(author=data).count()
