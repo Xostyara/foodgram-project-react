@@ -1,13 +1,10 @@
-from .serializers import UserCreateSerializer, UserSerializer
-
+from djoser.serializers import UserCreateSerializer,UserSerializer
 from rest_framework import serializers, validators
 
 from recipes.models import Recipe
 from recipes.serializers import RecipeSerializer
-from users.mixins import IsSubscribedMixin
-
 from .models import CustomUser
-from recipes.models import Follow
+
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta): 

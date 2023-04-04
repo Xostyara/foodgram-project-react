@@ -1,13 +1,14 @@
-from .views import UserViewSet
+from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.serializers import ListSerializer
 
-from .models import CustomUser, Follow
+from .models import CustomUser
+from recipes.models import Follow
 from .serializers import CustomUserSerializer, FollowSerializer
 
 User = CustomUser()

@@ -3,8 +3,8 @@ from django.contrib import admin
 from recipes.models import (Ingredient, IngredientsRecipe, Recipe, Tag,
                             TagsRecipe)
 
-from .models import CustomUser, Follow
-
+from .models import CustomUser
+from recipes.models import Follow
 
 class IngredientsInline(admin.TabularInline):
     model = IngredientsRecipe
