@@ -21,26 +21,21 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ('slug',)
-        verbose_name = 'Tag'
-        verbose_name_plural = 'Tags'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['slug'],
-                name='unique_slug'
-            )
-        ]
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+
 
     def __str__(self):
         return self.name
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200, verbose_name='ingredient name')
-    measurement_unit = models.CharField(max_length=10)
+    name = models.CharField(max_length=200, verbose_name='Название игредиента')
+    measurement_unit = models.CharField(max_length=10, verbose_name='Единицы измерения')
 
     class Meta:
-        verbose_name = 'Ingredient'
-        verbose_name_plural = 'Ingredients'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return self.name
@@ -100,7 +95,11 @@ class IngredientsRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         default=1,
-        validators=[MinValueValidator(1)],
+        validators=( 
+            MinValueValidator( 
+                1, message='Минимальное количество ингридиентов 1'
+            ),
+        ),
         help_text='Количество ингредиента',
     )
 

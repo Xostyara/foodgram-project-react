@@ -25,7 +25,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=['GET', 'DELETE'],
+        methods=['POST', 'DELETE'],
         permission_classes=[IsAuthenticatedOrReadOnly],
         url_path='favorite'
     )
@@ -36,7 +36,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             favorite_recipe, created = FavoriteRecipe.objects.get_or_create(
                 user=user, recipe=recipe
             )
-            if created is True:
+            if created:
                 serializer = FavoritedSerializer()
                 return Response(
                     serializer.to_representation(instance=favorite_recipe),
@@ -48,11 +48,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 recipe=recipe
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return None
 
     @action(
         detail=True,
-        methods=['GET', 'DELETE'],
+        methods=['POST', 'DELETE'],
         permission_classes=[IsAuthenticatedOrReadOnly]
     )
     def shopping_cart(self, request, pk):
@@ -102,7 +102,7 @@ class IngredientsViewSet(viewsets.ModelViewSet):
     search_fields = ('^name',)
 
 
-class TagsViewSet(viewsets.ModelViewSet):
+class TagsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
