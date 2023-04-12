@@ -43,15 +43,15 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
 
-    name = models.CharField(max_length=200, verbose_name='recipe title')
+    name = models.CharField(max_length=200, verbose_name='Название рецепта')
     image = models.ImageField(
         upload_to='recipes/',
-        verbose_name='recipe image',
+        verbose_name='Картинка рецепта',
         help_text='Картинка рецепта',
     )
     author = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='recipes',
-        verbose_name='recipe author', help_text='Автор рецепта',
+        verbose_name='Автор рецепта', help_text='Автор рецепта',
     )
     text = models.TextField(
         help_text='Текстовое описание рецепта', verbose_name='recipe text',
@@ -59,7 +59,7 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(
         Ingredient, through='IngredientsRecipe',
         related_name='recipes',
-        verbose_name='list of ingredients',
+        verbose_name='Список ингредиентов',
         help_text='Список ингредиентов',
     )
     tags = models.ManyToManyField(
@@ -104,8 +104,8 @@ class IngredientsRecipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ingredient in recipe'
-        verbose_name_plural = 'Ingredients in recipe'
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецепте'
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'ingredient'],
