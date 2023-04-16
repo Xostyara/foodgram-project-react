@@ -1,16 +1,3 @@
-version: '3.3'
-
-volumes:
-  postgres_data:
-  static_value:
-  media_value:
-
-services:
-
-  frontend:
-    image: 64286/foodgram_frontend:v1
-    volumes:
-      - ../frontend/:/app/result_build/
   db:
     image: postgres:12.4
     restart: always
