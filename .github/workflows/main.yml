@@ -22,7 +22,7 @@ jobs:
         with:
           push: true
           context: backend
-          tags: 64286/foodgram_backend:latest
+          tags: xostyara/foodgram_backend:latest
           
   build_frontend:
     name: Push Docker frontend image to Docker Hub
@@ -42,7 +42,7 @@ jobs:
         with:
           push: true
           context: frontend
-          tags: 64286/foodgram_frontend:latest
+          tags: xostyara/foodgram_frontend:latest
       
   deploy:
     runs-on: ubuntu-latest
