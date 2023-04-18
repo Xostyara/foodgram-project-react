@@ -56,7 +56,7 @@ jobs:
       ', github.ref)
     steps:
       - name: executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@master
+        uses: xostyara/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -89,7 +89,7 @@ jobs:
     needs: deploy
     steps:
     - name: send message
-      uses: appleboy/telegram-action@master
+      uses: xostyara/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
