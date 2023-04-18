@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = True
 # проверка3
 ALLOWED_HOSTS = [
-
+    '0.0.0.0', '127.0.0.1', 'localhost', 'web', '84.201.140.144',
 ]
 
 # For the Django Debug ToolBar
