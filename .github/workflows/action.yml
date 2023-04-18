@@ -54,7 +54,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }} 
           username: ${{ secrets.USER }} 
-          key: ${{ secrets.SSH_KEY }} # Добавлен правильный ключб еще
+          key: ${{ secrets.SSH_KEY }} # Добавлен правильный ключб еще1
           passphrase: ${{ secrets.PASSPHRASE }} # ДОБАВЛЕНО В SECRETS
           script: |
             # Исправлен scripts
