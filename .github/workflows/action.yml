@@ -77,11 +77,11 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose stop
-            # Выполняет pull образа с DockerHub
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
             sudo docker pull ${{ secrets.DOCKER_USER }}/foodgram_frontend
             sudo docker pull ${{ secrets.DOCKER_USER }}/foodgram_backend
-            #остановка всех контейнеров
             sudo docker-compose up -d
+            sudo docker image prune -a
             
   send_message:
     runs-on: ubuntu-latest
