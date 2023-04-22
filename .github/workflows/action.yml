@@ -65,25 +65,22 @@ jobs:
           stack_file_name: docker-compose.yaml
           script: |
             cd infra
-            echo ${{ secrets.DOCKER_PASSWORD }} | sudo docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            sudo docker-compose stop
-            sudo docker-compose rm web
-            sudo docker pull xostyara/foodgram_backend
-            sudo docker pull xostyara/foodgram_frontend
+            echo *** | sudo docker login -u *** --password-stdin
             touch .env
-            echo SENTRY_DNS=${{ secrets.SENTRY_DNS }} >> .env
-            echo DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> .env
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            echo SENTRY_DNS=*** >> .env
+            echo DJANGO_SECRET_KEY=*** >> .env
+            echo DB_ENGINE=*** >> .env
+            echo DB_NAME=*** >> .env
+            echo POSTGRES_USER=*** >> .env
+            echo POSTGRES_PASSWORD=*** >> .env
+            echo DB_HOST=*** >> .env
+            echo DB_PORT=*** >> .env
+            sudo docker-compose stop
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+            sudo docker pull xostyara/foodgram_frontend
+            sudo docker pull xostyara/foodgram_backend
             sudo docker-compose up -d
-            sudo docker-compose exec web python manage.py makemigrations users
-            sudo docker-compose exec web python manage.py makemigrations recipes
-            sudo docker-compose exec -T web python manage.py migrate --noinput
-            sudo docker-compose exec -T web python manage.py collectstatic --no-input
+            sudo docker image prune -a
 
   send_message:
     runs-on: ubuntu-latest
