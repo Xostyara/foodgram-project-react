@@ -80,7 +80,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
             docker run --name backend -it -p 80:80 foodgram_backend
-            docker run --name backend -it -p 5000:5000 foodgram_backend
+            docker run --name web -it -p 5000:5000 foodgram_frontend
             
 
   send_message:
