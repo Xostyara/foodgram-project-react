@@ -77,8 +77,8 @@ jobs:
             echo DB_PORT=*** >> .env
             sudo docker-compose stop
             sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            sudo docker pull xostyara/foodgram_frontend:latest
-            sudo docker pull xostyara/foodgram_backend:latest
+            sudo docker pull xostyara/foodgram_frontend
+            sudo docker pull xostyara/foodgram_backend
             sudo docker-compose up -d
             
 
