@@ -74,7 +74,6 @@ jobs:
             echo DB_PORT=*** >> .env
             sudo docker-compose up -d
             
-
   send_message:
     name: Telegram - Send message
     runs-on: ubuntu-latest
