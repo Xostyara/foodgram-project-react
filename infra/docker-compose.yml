@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   frontend:
-    image: xostyara/foodgram_frontend:latest
+    image: xostyara/foodgramfrontend:latest
     volumes:
       - ../frontend/:/app/result_build/
   db:
@@ -12,7 +12,7 @@ services:
     env_file:
       - ./.env
   backend:
-    image: xostyara/foodgram_backend:latest
+    image: xostyara/foodgrambackend:latest
     restart: always
     volumes:
       - static_value:/app_back/static/
