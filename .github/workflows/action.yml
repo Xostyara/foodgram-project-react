@@ -61,6 +61,7 @@ jobs:
           script: |
             sudo docker pull xostyara/foodgram_frontend:latest
             sudo docker pull xostyara/foodgram_backend:latest
+            cd infra
             sudo docker compose stop
             sudo docker compose rm backend
             touch .env
