@@ -59,8 +59,10 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            cd infra
-            echo *** | sudo docker login -u *** --password-stdin
+            sudo docker pull xostyara/foodgram_frontend:latest
+            sudo docker pull xostyara/foodgram_backend:latest
+            sudo docker-compose stop
+            sudo docker-compose rm backend
             touch .env
             echo SENTRY_DNS=*** >> .env
             echo DJANGO_SECRET_KEY=*** >> .env
@@ -70,12 +72,7 @@ jobs:
             echo POSTGRES_PASSWORD=*** >> .env
             echo DB_HOST=*** >> .env
             echo DB_PORT=*** >> .env
-            sudo docker-compose stop
-            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            sudo docker pull ***/foodgram_frontend
-            sudo docker pull ***/foodgram_backend
             sudo docker-compose up -d
-            sudo docker image prune -a
             
 
   send_message:
