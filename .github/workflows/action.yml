@@ -61,7 +61,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            sudo docker compose stop
+            sudo docker stop $(sudo docker ps -a -q)
             sudo docker compose rm backend
             sudo docker pull xostyara/foodgrambackend:latest
             sudo docker pull xostyara/foodgramfrontend:latest
