@@ -64,6 +64,7 @@ jobs:
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker compose rm backend
             sudo docker system prune -a
+            sudo systemctl stop nginx
             sudo docker pull xostyara/foodgrambackend:latest
             sudo docker pull xostyara/foodgramfrontend:latest
             touch .env
