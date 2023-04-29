@@ -3,6 +3,7 @@ services:
 
   frontend:
     image: xostyara/foodgramfrontend:latest
+    restart: always
     volumes:
       - ../frontend/:/app/result_build/
   db:
