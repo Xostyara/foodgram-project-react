@@ -11,7 +11,7 @@ services:
       - ./.env
 
   backend:
-    image: maliarda/foodgrambackend:latest
+    image: xostyara/foodgrambackend:latest
     restart: always
     volumes:
       - static_value:/backend/static/
@@ -22,7 +22,7 @@ services:
       - ./.env
 
   frontend:
-    image: maliarda/foodgramfrontend:latest
+    image: xostyara/foodgramfrontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
