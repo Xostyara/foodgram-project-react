@@ -1,33 +1,46 @@
 from django_filters import rest_framework as filters
 
-from .models import Recipe, Tag
+from .models import Ingredient, Recipe, Tag
+
+
+class IngredientSearchFilter(filters.FilterSet):
+    """Фильтр по частичному вхождению в начале названия ингредиента."""
+
+    name = filters.CharFilter(
+        field_name="name",
+        lookup_expr="istartswith",
+    )
+
+    class Meta:
+        model = Ingredient
+        fields = ("name",)
 
 
 class RecipeFilter(filters.FilterSet):
-    tags = filters.filters.ModelMultipleChoiceFilter(
-        queryset=Tag.objects.all(),
-        field_name='tags__slug',
-        to_field_name='slug',
-    )
-    author = filters.CharFilter(lookup_expr='exact')
-    is_in_shopping_cart = filters.BooleanFilter(
-        field_name='is_in_shopping_cart', method='filter'
-    )
-    is_favorited = filters.BooleanFilter(
-        field_name='is_favorited', method='filter'
-    )
+    """Фильтр по избранному, автору, списку покупок и тэгам"""
 
-    def filter(self, queryset, name, value):
-        if name == 'is_in_shopping_cart' and value:
-            queryset = queryset.filter(
-                shopping_cart__user=self.request.user
-            )
-        if name == 'is_favorited' and value:
-            queryset = queryset.filter(
-                favorite_recipes__user=self.request.user
-            )
-        return queryset
+    tags = filters.ModelMultipleChoiceFilter(
+        field_name="tags__slug",
+        queryset=Tag.objects.all(),
+        to_field_name="slug",
+    )
+    is_favorited = filters.BooleanFilter(method="get_is_favorited")
+    is_in_shopping_cart = filters.BooleanFilter(
+        method="get_is_in_shopping_cart"
+    )
 
     class Meta:
         model = Recipe
-        fields = ['author', 'tags', 'is_in_shopping_cart', 'is_favorited']
+        fields = ("tags", "author", "is_favorited", "is_in_shopping_cart")
+
+    def get_is_favorited(self, queryset, name, value):
+        user = self.request.user
+        if value:
+            return queryset.filter(favorites__user=user)
+        return Recipe.objects.all()
+
+    def get_is_in_shopping_cart(self, queryset, name, value):
+        user = self.request.user
+        if value:
+            return queryset.filter(shopping_cart__user=user)
+        return Recipe.objects.all()
