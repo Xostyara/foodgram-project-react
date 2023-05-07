@@ -114,8 +114,6 @@ http://158.160.21.33
 
 # Примеры запросов к API.
 
-Запросы к API начинаются с «/api/v1/»
-
 1) регистрация пользователя
 
 POST-запрос: /api/users/
@@ -183,5 +181,3 @@ POST-запрос: /api/auth/token/login/
 xost.andreev@yandex.ru<br />
 Telegram: @xostyara
 
-
-Проверка деплой
